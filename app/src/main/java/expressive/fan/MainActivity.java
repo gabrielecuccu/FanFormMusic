@@ -19,7 +19,7 @@ import expressive.fan.core.MainActivityView;
 
 public class MainActivity extends AppCompatActivity implements MainActivityView {
 
-    private final MainActivityController controller = new MainActivityControllerImpl(this);
+    private MainActivityController controller;
 
     private final Steps steps = new Steps();
 
@@ -34,13 +34,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.btn_play).setOnClickListener(view -> controller.play());
-        findViewById(R.id.btn_pause).setOnClickListener(view -> controller.pause());
-        findViewById(R.id.btn_stop).setOnClickListener(view -> controller.stop());
+        controller = new MainActivityControllerImpl(this);
 
-        findViewById(R.id.btn_play).setEnabled(true);
-        findViewById(R.id.btn_pause).setEnabled(false);
-        findViewById(R.id.btn_stop).setEnabled(false);
+        findViewById(R.id.btn_play).setOnClickListener(view -> controller.playClicked());
+        findViewById(R.id.btn_pause).setOnClickListener(view -> controller.pauseClicked());
+        findViewById(R.id.btn_stop).setOnClickListener(view -> controller.stopClicked());
 
         ((SeekBar) findViewById(R.id.seekBar)).setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -103,44 +101,37 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
     }
 
+    public void createPlayer(){
+        mediaPlayer = MediaPlayer.create(this, R.raw.longing);
+        mediaPlayer.setVolume(0.75f, 0.75f);
+    }
+
     public void play() {
-        if (mediaPlayer == null) {
-            mediaPlayer = MediaPlayer.create(this, R.raw.longing);
-            mediaPlayer.setVolume(0.75f, 0.75f);
-            mediaPlayer.start();
-
-            findViewById(R.id.btn_play).setEnabled(false);
-            findViewById(R.id.btn_pause).setEnabled(true);
-            findViewById(R.id.btn_stop).setEnabled(true);
-        } else {
-            if (!mediaPlayer.isPlaying()) {
-                mediaPlayer.start();
-
-                findViewById(R.id.btn_play).setEnabled(false);
-                findViewById(R.id.btn_pause).setEnabled(true);
-                findViewById(R.id.btn_stop).setEnabled(true);
-            }
-        }
+        mediaPlayer.start();
     }
 
     public void pause() {
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-            findViewById(R.id.btn_play).setEnabled(true);
-            findViewById(R.id.btn_pause).setEnabled(false);
-            findViewById(R.id.btn_stop).setEnabled(true);
-        }
+        mediaPlayer.pause();
     }
 
     public void stop() {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
-            mediaPlayer = null;
+        mediaPlayer.stop();
+        mediaPlayer.release();
+        mediaPlayer = null;
+    }
 
-            findViewById(R.id.btn_play).setEnabled(true);
-            findViewById(R.id.btn_pause).setEnabled(false);
-            findViewById(R.id.btn_stop).setEnabled(false);
-        }
+    @Override
+    public void setPlayButtonEnabled(boolean b) {
+        findViewById(R.id.btn_play).setEnabled(b);
+    }
+
+    @Override
+    public void setPauseButtonEnabled(boolean b) {
+        findViewById(R.id.btn_pause).setEnabled(b);
+    }
+
+    @Override
+    public void setStopButtonEnabled(boolean b) {
+        findViewById(R.id.btn_stop).setEnabled(b);
     }
 }
