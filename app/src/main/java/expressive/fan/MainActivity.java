@@ -13,8 +13,13 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import expressive.fan.controllers.MainActivityControllerImpl;
+import expressive.fan.core.MainActivityController;
+import expressive.fan.core.MainActivityView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityView {
+
+    private final MainActivityController controller = new MainActivityControllerImpl(this);
 
     private MediaPlayer mediaPlayer;
 
@@ -29,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.btn_play).setOnClickListener(view -> play());
-        findViewById(R.id.btn_pause).setOnClickListener(view -> pause());
-        findViewById(R.id.btn_stop).setOnClickListener(view -> stop());
+        findViewById(R.id.btn_play).setOnClickListener(view -> controller.play());
+        findViewById(R.id.btn_pause).setOnClickListener(view -> controller.pause());
+        findViewById(R.id.btn_stop).setOnClickListener(view -> controller.stop());
 
         findViewById(R.id.btn_play).setEnabled(true);
         findViewById(R.id.btn_pause).setEnabled(false);
@@ -98,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
     }
 
-    private void play() {
+    public void play() {
         if (mediaPlayer == null) {
             mediaPlayer = MediaPlayer.create(this, R.raw.longing);
             mediaPlayer.setVolume(0.75f, 0.75f);
@@ -118,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void pause() {
+    public void pause() {
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             findViewById(R.id.btn_play).setEnabled(true);
@@ -127,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void stop() {
+    public void stop() {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
