@@ -21,9 +21,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     private final MainActivityController controller = new MainActivityControllerImpl(this);
 
-    private MediaPlayer mediaPlayer;
+    private final Steps steps = new Steps();
 
-    private Steps steps = new Steps();
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
