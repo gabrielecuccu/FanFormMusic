@@ -1,64 +1,24 @@
 package expressive.fan;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.util.HashMap;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
 
-    private HashMap<Integer, String> steps = new HashMap<Integer, String>() {{
-        put(0, "Wu Gi stance");
-        put(28000, "Opening the form");
-        put(49000, "Embrace the moon");
-        put(58000, "Toss");
-        put(63000, "Fan pointing back diagonal");
-        put(68000, "Open the fan");
-        put(77000, "Swallow swoops on the water");
-        put(80000, "Open the fan");
-        put(84000, "Dr. Hua Tuo lowers the blind");
-        put(88000, "Yellow nightingale's descent");
-        put(90000, "Phoenix dances in a circle");
-        put(98000, "Black dragon shakes its tail");
-        put(103000, "Turn around and strike the tiger");
-        put(105000, "Open the fan");
-        put(106000, "Close the fan");
-        put(107000, "Spirit dragon turns its head");
-        put(111000, "Pluck the lotus from the lake (DOWN)");
-        put(113000, "Pluck the lotus from the lake (UP)");
-        put(120000, "Wild goose flies south");
-
-        put(128000, "Low hanging stance");
-        put(130000, "Zhoajun catches butterflies (golden cockerel)");
-        put(134000, "(right fighting stance)");
-        put(138000, "(right lady stance) -> Flood dragon plays with the pearl");
-        put(142000, "(catch the fan) -> Roc spreads its wings");
-        put(150000, "(Open the fan)");
-        put(160000, "Waiting for Mayumi :)");
-    }};
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private String getStep(int millis) {
-        Set<Integer> keys = steps.keySet();
-        int max = keys.stream().filter(s -> s <= millis).max(Integer::compareTo).get();
-        return steps.get(max);
-    }
+    private Steps steps = new Steps();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,14 +70,14 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (mediaPlayer == null) {
                         ((SeekBar) findViewById(R.id.seekBar)).setProgress(0);
-                        ((TextView) findViewById(R.id.textViewStep)).setText(getStep(0));
+                        ((TextView) findViewById(R.id.textViewStep)).setText(steps.getStepAt(0));
                         ((TextView) findViewById(R.id.textViewTimer)).setText(formatTime(0));
                     } else {
                         float curPos = mediaPlayer.getCurrentPosition();
                         float total = mediaPlayer.getDuration();
                         float progress = curPos / total * 100;
                         ((SeekBar) findViewById(R.id.seekBar)).setProgress((int) progress);
-                        ((TextView) findViewById(R.id.textViewStep)).setText(getStep((int) curPos));
+                        ((TextView) findViewById(R.id.textViewStep)).setText(steps.getStepAt((int) curPos));
                         ((TextView) findViewById(R.id.textViewTimer)).setText(formatTime((long) curPos));
                     }
                 });
