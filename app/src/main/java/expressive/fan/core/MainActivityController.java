@@ -27,4 +27,6 @@ public interface MainActivityController {
     void resetProgress();
 
     void seekToNewPos(int progress);
+
+    void completed();
 }

@@ -115,4 +115,9 @@ public class MainActivityControllerImpl implements MainActivityController {
         int newPos = total / 100 * progress;
         view.seekTo(newPos);
     }
+
+    @Override
+    public void completed() {
+        state.completed();
+    }
 }

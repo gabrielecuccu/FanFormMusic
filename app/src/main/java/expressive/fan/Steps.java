@@ -39,7 +39,6 @@ public class Steps extends HashMap<Integer, String> {
     }
 
     public int getProgressOfStepAt(int millis) {
-        System.out.println(millis);
         int start = keySet().stream().filter(s -> s <= millis).max(Integer::compareTo).get();
         int end = keySet().stream().filter(s -> s > millis).min(Integer::compareTo).get();
         int stepDuration = end - start;

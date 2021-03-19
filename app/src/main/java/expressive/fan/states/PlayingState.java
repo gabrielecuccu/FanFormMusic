@@ -34,4 +34,10 @@ public class PlayingState extends AbstractState {
     public void progressChangedByScheduler() {
         controller.updateProgress();
     }
+
+    @Override
+    public void completed() {
+        controller.setNextState(new StoppedState(controller));
+        controller.stop();
+    }
 }

@@ -26,4 +26,9 @@ public abstract class AbstractState implements State {
     public void progressChangedByScheduler() {
 
     }
+
+    @Override
+    public void completed() {
+
+    }
 }

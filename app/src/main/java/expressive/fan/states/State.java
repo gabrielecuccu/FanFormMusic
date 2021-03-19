@@ -9,4 +9,6 @@ public interface State {
     void progressChangedByUser(int progress);
 
     void progressChangedByScheduler();
+
+    void completed();
 }

@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     synchronized public void createPlayer() {
         mediaPlayer = MediaPlayer.create(this, R.raw.longing);
         mediaPlayer.setVolume(0.75f, 0.75f);
+        mediaPlayer.setOnCompletionListener(mp -> controller.completed());
     }
 
     synchronized public void play() {
