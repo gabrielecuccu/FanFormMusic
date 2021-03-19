@@ -16,4 +16,9 @@ public abstract class AbstractState implements State {
     public void stopClicked() {
 
     }
+
+    @Override
+    public void progressChanged(int progress) {
+
+    }
 }

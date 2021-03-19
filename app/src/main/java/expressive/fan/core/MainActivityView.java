@@ -9,4 +9,8 @@ public interface MainActivityView {
     void setPlayButtonEnabled(boolean b);
     void setPauseButtonEnabled(boolean b);
     void setStopButtonEnabled(boolean b);
+
+    int getTotalAudioDuration();
+
+    void seekTo(int newPos);
 }

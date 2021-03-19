@@ -19,4 +19,13 @@ public class StoppedState extends AbstractState {
         controller.play();
         controller.setNextState(new PlayingState(controller));
     }
+
+    @Override
+    public void progressChanged(int progress) {
+        controller.createPlayer();
+        int total = controller.getTotalAudioDuration();
+        int newPos = total / 100 * progress;
+        controller.seekTo(newPos);
+        controller.setNextState(new PausedState(controller));
+    }
 }

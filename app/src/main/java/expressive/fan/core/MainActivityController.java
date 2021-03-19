@@ -17,4 +17,10 @@ public interface MainActivityController {
     void setStopButtonEnabled(boolean b);
 
     void setNextState(State nextState);
+
+    void progressChanged(int progress, boolean fromUser);
+
+    int getTotalAudioDuration();
+
+    void seekTo(int newPos);
 }

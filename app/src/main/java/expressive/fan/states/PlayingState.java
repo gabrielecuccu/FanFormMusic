@@ -24,4 +24,11 @@ public class PlayingState extends AbstractState {
         controller.stop();
         controller.setNextState(new StoppedState(controller));
     }
+
+    @Override
+    public void progressChanged(int progress) {
+        int total = controller.getTotalAudioDuration();
+        int newPos = total / 100 * progress;
+        controller.seekTo(newPos);
+    }
 }

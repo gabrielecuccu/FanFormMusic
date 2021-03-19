@@ -70,4 +70,23 @@ public class MainActivityControllerImpl implements MainActivityController {
     public void setNextState(State nextState) {
         state = nextState;
     }
+
+    @Override
+    public void progressChanged(int progress, boolean fromUser) {
+        if (!fromUser) {
+            return;
+        }
+
+        state.progressChanged(progress);
+    }
+
+    @Override
+    public int getTotalAudioDuration() {
+        return view.getTotalAudioDuration();
+    }
+
+    @Override
+    public void seekTo(int newPos) {
+        view.seekTo(newPos);
+    }
 }

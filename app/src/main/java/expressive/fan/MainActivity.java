@@ -40,32 +40,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         findViewById(R.id.btn_pause).setOnClickListener(view -> controller.pauseClicked());
         findViewById(R.id.btn_stop).setOnClickListener(view -> controller.stopClicked());
 
-        ((SeekBar) findViewById(R.id.seekBar)).setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (!fromUser) {
-                    return;
-                }
-
-                if (mediaPlayer == null) {
-                    return;
-                }
-
-                int total = mediaPlayer.getDuration();
-                int newPos = total / 100 * progress;
-                mediaPlayer.seekTo(newPos);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+        ((SeekBar) findViewById(R.id.seekBar)).setOnSeekBarChangeListener(new SeekBarChangeListener(controller));
 
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -133,5 +108,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     @Override
     public void setStopButtonEnabled(boolean b) {
         findViewById(R.id.btn_stop).setEnabled(b);
+    }
+
+    @Override
+    public int getTotalAudioDuration() {
+        return mediaPlayer.getDuration();
+    }
+
+    @Override
+    public void seekTo(int newPos) {
+        mediaPlayer.seekTo(newPos);
     }
 }

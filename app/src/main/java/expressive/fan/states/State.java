@@ -5,4 +5,6 @@ public interface State {
     void playClicked();
     void pauseClicked();
     void stopClicked();
+
+    void progressChanged(int progress);
 }
