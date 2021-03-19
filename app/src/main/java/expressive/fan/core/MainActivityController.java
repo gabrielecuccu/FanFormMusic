@@ -28,7 +28,5 @@ public interface MainActivityController {
 
     void updateProgress();
 
-    int getCurrentPosition();
-
     void resetProgress();
 }

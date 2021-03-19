@@ -115,11 +115,6 @@ public class MainActivityControllerImpl implements MainActivityController {
     }
 
     @Override
-    public int getCurrentPosition() {
-        return view.getCurrentPosition();
-    }
-
-    @Override
     public void resetProgress() {
         view.updateProgress(0, 0);
     }
