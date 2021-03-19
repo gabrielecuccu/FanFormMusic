@@ -31,9 +31,19 @@ public class Steps extends HashMap<Integer, String> {
         put(142000, "(catch the fan) -> Roc spreads its wings");
         put(150000, "(Open the fan)");
         put(160000, "Waiting for Mayumi :)");
+        put(306000, "END");
     }
 
     public String getStepAt(int millis) {
         return get(keySet().stream().filter(s -> s <= millis).max(Integer::compareTo).get());
+    }
+
+    public int getProgressOfStepAt(int millis) {
+        System.out.println(millis);
+        int start = keySet().stream().filter(s -> s <= millis).max(Integer::compareTo).get();
+        int end = keySet().stream().filter(s -> s > millis).min(Integer::compareTo).get();
+        int stepDuration = end - start;
+        int positionInStep = millis - start;
+        return (int) ((float) positionInStep / (float) stepDuration * 100);
     }
 }

@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -109,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     public void updateProgress(int position, int progress) {
         runOnUiThread(() -> {
             ((SeekBar) findViewById(R.id.seekBar)).setProgress(progress);
+            ((ProgressBar) findViewById(R.id.progressBar)).setProgress(steps.getProgressOfStepAt(position));
             ((TextView) findViewById(R.id.textViewStep)).setText(steps.getStepAt(position));
             ((TextView) findViewById(R.id.textViewTimer)).setText(formatTime(position));
         });
