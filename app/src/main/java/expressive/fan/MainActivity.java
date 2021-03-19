@@ -55,20 +55,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
     }
 
-    public void createPlayer(){
+    synchronized public void createPlayer() {
         mediaPlayer = MediaPlayer.create(this, R.raw.longing);
         mediaPlayer.setVolume(0.75f, 0.75f);
     }
 
-    public void play() {
+    synchronized public void play() {
         mediaPlayer.start();
     }
 
-    public void pause() {
+    synchronized public void pause() {
         mediaPlayer.pause();
     }
 
-    public void stop() {
+    synchronized public void stop() {
         mediaPlayer.stop();
         mediaPlayer.release();
         mediaPlayer = null;
@@ -92,14 +92,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     @Override
     public int getTotalAudioDuration() {
         if (duration == null) {
-            duration = mediaPlayer.getDuration();
+            synchronized (this) {
+                duration = mediaPlayer.getDuration();
+            }
         }
 
         return duration;
     }
 
     @Override
-    public void seekTo(int newPos) {
+    synchronized public void seekTo(int newPos) {
         mediaPlayer.seekTo(newPos);
     }
 
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     }
 
     @Override
-    public int getCurrentPosition() {
+    synchronized public int getCurrentPosition() {
         return mediaPlayer.getCurrentPosition();
     }
 }

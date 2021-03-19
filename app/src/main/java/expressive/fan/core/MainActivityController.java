@@ -20,13 +20,11 @@ public interface MainActivityController {
 
     void progressChanged(int progress, boolean fromUser);
 
-    int getTotalAudioDuration();
-
-    void seekTo(int newPos);
-
     void startScheduler();
 
     void updateProgress();
 
     void resetProgress();
+
+    void seekToNewPos(int progress);
 }

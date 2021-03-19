@@ -84,16 +84,6 @@ public class MainActivityControllerImpl implements MainActivityController {
     }
 
     @Override
-    public int getTotalAudioDuration() {
-        return view.getTotalAudioDuration();
-    }
-
-    @Override
-    public void seekTo(int newPos) {
-        view.seekTo(newPos);
-    }
-
-    @Override
     public void startScheduler() {
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -117,5 +107,12 @@ public class MainActivityControllerImpl implements MainActivityController {
     @Override
     public void resetProgress() {
         view.updateProgress(0, 0);
+    }
+
+    @Override
+    public void seekToNewPos(int progress) {
+        int total = view.getTotalAudioDuration();
+        int newPos = total / 100 * progress;
+        view.seekTo(newPos);
     }
 }
