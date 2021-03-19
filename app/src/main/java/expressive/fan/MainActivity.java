@@ -119,6 +119,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     synchronized public int getCurrentPosition() {
-        return mediaPlayer.getCurrentPosition();
+        return mediaPlayer != null ? mediaPlayer.getCurrentPosition() : 0;
     }
 }
