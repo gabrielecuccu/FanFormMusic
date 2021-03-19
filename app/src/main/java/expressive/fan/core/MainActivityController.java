@@ -23,4 +23,12 @@ public interface MainActivityController {
     int getTotalAudioDuration();
 
     void seekTo(int newPos);
+
+    void startScheduler();
+
+    void updateProgress();
+
+    int getCurrentPosition();
+
+    void resetProgress();
 }

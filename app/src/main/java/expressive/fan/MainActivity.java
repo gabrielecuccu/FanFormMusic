@@ -8,8 +8,6 @@ import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +22,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     private final Steps steps = new Steps();
 
     private MediaPlayer mediaPlayer;
+
+    private Integer duration = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,28 +42,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         ((SeekBar) findViewById(R.id.seekBar)).setOnSeekBarChangeListener(new SeekBarChangeListener(controller));
 
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(() -> {
-                    if (mediaPlayer == null) {
-                        ((SeekBar) findViewById(R.id.seekBar)).setProgress(0);
-                        ((TextView) findViewById(R.id.textViewStep)).setText(steps.getStepAt(0));
-                        ((TextView) findViewById(R.id.textViewTimer)).setText(formatTime(0));
-                    } else {
-                        float curPos = mediaPlayer.getCurrentPosition();
-                        float total = mediaPlayer.getDuration();
-                        float progress = curPos / total * 100;
-                        ((SeekBar) findViewById(R.id.seekBar)).setProgress((int) progress);
-                        ((TextView) findViewById(R.id.textViewStep)).setText(steps.getStepAt((int) curPos));
-                        ((TextView) findViewById(R.id.textViewTimer)).setText(formatTime((long) curPos));
-                    }
-                });
-            }
-        };
-
-        Timer timer = new Timer();
-        timer.schedule(timerTask, 0, 200);
+        controller.startScheduler();
     }
 
     @SuppressLint("DefaultLocale")
@@ -112,11 +91,29 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     public int getTotalAudioDuration() {
-        return mediaPlayer.getDuration();
+        if (duration == null) {
+            duration = mediaPlayer.getDuration();
+        }
+
+        return duration;
     }
 
     @Override
     public void seekTo(int newPos) {
         mediaPlayer.seekTo(newPos);
+    }
+
+    @Override
+    public void updateProgress(int position, int progress) {
+        runOnUiThread(() -> {
+            ((SeekBar) findViewById(R.id.seekBar)).setProgress(progress);
+            ((TextView) findViewById(R.id.textViewStep)).setText(steps.getStepAt(position));
+            ((TextView) findViewById(R.id.textViewTimer)).setText(formatTime(position));
+        });
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        return mediaPlayer.getCurrentPosition();
     }
 }

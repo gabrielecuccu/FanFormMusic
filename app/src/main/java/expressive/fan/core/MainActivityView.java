@@ -13,4 +13,8 @@ public interface MainActivityView {
     int getTotalAudioDuration();
 
     void seekTo(int newPos);
+
+    void updateProgress(int position, int progress);
+
+    int getCurrentPosition();
 }

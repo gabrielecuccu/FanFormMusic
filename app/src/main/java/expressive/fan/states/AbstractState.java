@@ -18,7 +18,12 @@ public abstract class AbstractState implements State {
     }
 
     @Override
-    public void progressChanged(int progress) {
+    public void progressChangedByUser(int progress) {
+
+    }
+
+    @Override
+    public void progressChangedByScheduler() {
 
     }
 }

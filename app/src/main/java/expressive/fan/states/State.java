@@ -6,5 +6,7 @@ public interface State {
     void pauseClicked();
     void stopClicked();
 
-    void progressChanged(int progress);
+    void progressChangedByUser(int progress);
+
+    void progressChangedByScheduler();
 }

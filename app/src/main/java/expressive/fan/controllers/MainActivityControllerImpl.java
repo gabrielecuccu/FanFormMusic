@@ -1,5 +1,8 @@
 package expressive.fan.controllers;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import expressive.fan.core.MainActivityController;
 import expressive.fan.core.MainActivityView;
 import expressive.fan.states.InitState;
@@ -77,7 +80,7 @@ public class MainActivityControllerImpl implements MainActivityController {
             return;
         }
 
-        state.progressChanged(progress);
+        state.progressChangedByUser(progress);
     }
 
     @Override
@@ -88,5 +91,36 @@ public class MainActivityControllerImpl implements MainActivityController {
     @Override
     public void seekTo(int newPos) {
         view.seekTo(newPos);
+    }
+
+    @Override
+    public void startScheduler() {
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                state.progressChangedByScheduler();
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 0, 200);
+    }
+
+    @Override
+    public void updateProgress() {
+        float curPos = view.getCurrentPosition();
+        float total = view.getTotalAudioDuration();
+        float progress = curPos / total * 100;
+        view.updateProgress((int) curPos, (int) progress);
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        return view.getCurrentPosition();
+    }
+
+    @Override
+    public void resetProgress() {
+        view.updateProgress(0, 0);
     }
 }
