@@ -3,11 +3,18 @@ package expressive.fan.controllers
 import expressive.fan.core.MainActivityController
 import expressive.fan.core.MainActivityView
 import expressive.fan.states.InitState
+import expressive.fan.states.InitialisedState
 import expressive.fan.states.State
 import java.util.*
 
 class MainActivityControllerImpl(private val view: MainActivityView) : MainActivityController {
-    private var state: State
+
+    private var state: State = InitState()
+
+    override fun initialise() {
+        setNextState(InitialisedState(this))
+    }
+
     override fun playClicked() {
         state.playClicked()
     }
@@ -88,9 +95,5 @@ class MainActivityControllerImpl(private val view: MainActivityView) : MainActiv
 
     override fun completed() {
         state.completed()
-    }
-
-    init {
-        state = InitState(this)
     }
 }

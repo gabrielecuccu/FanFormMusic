@@ -16,21 +16,26 @@ import expressive.fan.core.MainActivityView
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(), MainActivityView {
-    private var controller: MainActivityController? = null
+
+    private val controller: MainActivityController = MainActivityControllerImpl(this)
+
     private val steps: Steps = Steps()
+
     private var mediaPlayer: MediaPlayer? = null
+
     private var duration: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)
-        controller = MainActivityControllerImpl(this)
-        findViewById<View?>(R.id.btn_play).setOnClickListener { controller!!.playClicked() }
-        findViewById<View?>(R.id.btn_pause).setOnClickListener { controller!!.pauseClicked() }
-        findViewById<View?>(R.id.btn_stop).setOnClickListener { controller!!.stopClicked() }
-        (findViewById<View?>(R.id.seekBar) as SeekBar).setOnSeekBarChangeListener(SeekBarChangeListener(controller!!))
-        controller!!.startScheduler()
+        controller.initialise()
+        findViewById<View?>(R.id.btn_play).setOnClickListener { controller.playClicked() }
+        findViewById<View?>(R.id.btn_pause).setOnClickListener { controller.pauseClicked() }
+        findViewById<View?>(R.id.btn_stop).setOnClickListener { controller.stopClicked() }
+        (findViewById<View?>(R.id.seekBar) as SeekBar).setOnSeekBarChangeListener(SeekBarChangeListener(controller))
+        controller.startScheduler()
     }
 
     @SuppressLint("DefaultLocale")
@@ -47,7 +52,7 @@ class MainActivity : AppCompatActivity(), MainActivityView {
     override fun createPlayer() {
         mediaPlayer = MediaPlayer.create(this, R.raw.longing)
         mediaPlayer?.setVolume(0.75f, 0.75f)
-        mediaPlayer?.setOnCompletionListener { controller!!.completed() }
+        mediaPlayer?.setOnCompletionListener { controller.completed() }
     }
 
     @Synchronized

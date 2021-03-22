@@ -3,6 +3,7 @@ package expressive.fan.core
 import expressive.fan.states.State
 
 interface MainActivityController {
+    fun initialise()
     fun playClicked()
     fun pauseClicked()
     fun stopClicked()
