@@ -3,13 +3,27 @@ package expressive.fan
 import java.util.*
 
 class Steps : HashMap<Int?, String?>() {
-    fun getStepAt(millis: Int): String? {
-        return get(keys.stream().filter { s: Int? -> s!! <= millis }.max { obj: Int?, anotherInteger: Int? -> obj!!.compareTo(anotherInteger!!) }.get())
-    }
+
+    fun getStepAt(millis: Int): String? =
+            get(keys
+                .stream()
+                .filter { s: Int? -> s!! <= millis }
+                .max { obj: Int?, anotherInteger: Int? -> obj!!.compareTo(anotherInteger!!) }
+                .get())
 
     fun getProgressOfStepAt(millis: Int): Int {
-        val start = keys.stream().filter { s: Int? -> s!! <= millis }.max { obj: Int?, anotherInteger: Int? -> obj!!.compareTo(anotherInteger!!) }.get()
-        val end = keys.stream().filter { s: Int? -> s!! > millis }.min { obj: Int?, anotherInteger: Int? -> obj!!.compareTo(anotherInteger!!) }.get()
+        val start = keys
+                .stream()
+                .filter { s: Int? -> s!! <= millis }
+                .max { obj: Int?, anotherInteger: Int? -> obj!!.compareTo(anotherInteger!!) }
+                .get()
+
+        val end = keys
+                .stream()
+                .filter { s: Int? -> s!! > millis }
+                .min { obj: Int?, anotherInteger: Int? -> obj!!.compareTo(anotherInteger!!) }
+                .get()
+
         val stepDuration = end - start
         val positionInStep = millis - start
         return (positionInStep.toFloat() / stepDuration.toFloat() * 100).toInt()
